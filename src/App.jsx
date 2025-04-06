@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Header from "./component/Header";
 import Content from "./component/Content";
 import Footer from "./component/Footer";
@@ -83,9 +83,9 @@ function App() {
     <div className="App">
       <Header title={"Grosary List"} />
       <AddItem
-        handleSubmit={addItem}
+        handleSubmit={handleSubmit}
         newItems={newItems}
-        setNewItems={handleSubmit}
+        setNewItems={setNewItems}
       />
       <SearchItems search={search} setSearch={setSearch} />
       <Content
