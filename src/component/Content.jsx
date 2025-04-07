@@ -1,24 +1,9 @@
 import React, { useState } from "react";
 import ItemList from "./ItemList";
 
-function Content({
-  products,
-  handleCheckBox,
-  handleDelete,
-  inputValue,
-  setInputValue,
-  handleAddItem,
-}) {
+function Content({ products, handleCheckBox, handleDelete }) {
   return (
     <main>
-      {/* <>
-        <input
-          type="text"
-          value={inputValue}
-          onChange={(e) => setInputValue(e.target.value)}
-        />
-        <button onClick={handleAddItem}>Add</button>
-      </> */}
       <>
         {products.length ? (
           <ItemList

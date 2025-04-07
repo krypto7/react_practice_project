@@ -4,33 +4,28 @@ import Content from "./component/Content";
 import Footer from "./component/Footer";
 import AddItem from "./component/AddItem";
 import SearchItems from "./component/SearchItems";
+import { useEffect } from "react";
 
 function App() {
-  const [products, setProducts] = useState([
-    {
-      id: 1,
-      item: "Egg",
-      checked: false,
-    },
-    {
-      id: 2,
-      item: "App",
-      checked: true,
-    },
-    {
-      id: 3,
-      item: "Pancake",
-      checked: false,
-    },
-    {
-      id: 4,
-      item: "Pizza",
-      checked: false,
-    },
-  ]);
+  const API_URL = `http://localhost:3000/products`;
 
+  const [products, setProducts] = useState([]);
   const [newItems, setNewItems] = useState("");
   const [search, setSearch] = useState("");
+
+  useEffect(() => {
+    const fetchItem = async () => {
+      try {
+        const response = await fetch(API_URL);
+        const listItems = await response.json();
+        console.log("====>", listItems);
+        setProducts(listItems);
+      } catch (error) {
+        console.log(error.message);
+      }
+    };
+    fetchItem();
+  }, []);
 
   const addItem = (item) => {
     const newItem = {
@@ -38,8 +33,9 @@ function App() {
       item: item,
       checked: false,
     };
-    setProducts([...products, newItem]);
-    localStorage.setItem("shoppinglist", JSON.stringify(newItem));
+    const updatedList = [...products, newItem];
+    setProducts(updatedList);
+    // localStorage.setItem("shoppinglist", JSON.stringify(updatedList));
   };
 
   const handleSubmit = (e) => {
@@ -50,32 +46,18 @@ function App() {
   };
 
   const handleCheckBox = (id) => {
-    const udpatedBox = products.map((item) =>
+    const updatedBox = products.map((item) =>
       item.id === id ? { ...item, checked: !item.checked } : item
     );
-    setProducts(udpatedBox);
-    localStorage.setItem("shoppinglist", JSON.stringify(udpatedBox));
+    setProducts(updatedBox);
+    // localStorage.setItem("shoppinglist", JSON.stringify(updatedBox));
   };
 
   const handleDelete = (id) => {
-    const udpatedBox = products.filter((item) => item.id !== id);
-    setProducts(udpatedBox);
-    localStorage.setItem("shoppinglist", JSON.stringify(udpatedBox));
+    const updatedBox = products.filter((item) => item.id !== id);
+    setProducts(updatedBox);
+    // localStorage.setItem("shoppinglist", JSON.stringify(updatedBox));
   };
-
-  // const handleAddItem = () => {
-  //   if (!inputValue.trim()) return;
-  //   const newItem = {
-  //     id: Date.now(),
-  //     item: inputValue,
-  //     checked: false,
-  //   };
-
-  //   const udpatedList = [...products, newItem];
-  //   setProducts(udpatedList);
-  //   localStorage.setItem("shoppinglist", JSON.stringify(udpatedList));
-  //   setInputValue("");
-  // };
 
   const checkedLength = products.filter((item) => item.checked);
 
@@ -94,9 +76,6 @@ function App() {
         )}
         handleCheckBox={handleCheckBox}
         handleDelete={handleDelete}
-        // inputValue={inputValue}
-        // setInputValue={setInputValue}
-        // handleAddItem={handleAddItem}
       />
       <Footer
         listLength={products.length}
